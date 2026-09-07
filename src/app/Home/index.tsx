@@ -9,7 +9,25 @@ import styles from './styles';
 const FILTER_STATUS: FilterStatus[] = Object.values(
   FilterStatus
 ) as FilterStatus[];
-const ITEMS = Array.from({ length: 100 }).map((_, index) => index);
+
+const EMPTY_MESSAGE = 'Lista vazia';
+const ITEMS = [
+  {
+    id: '1',
+    status: FilterStatus.DONE,
+    description: 'Comprar livro',
+  },
+  {
+    id: '2',
+    status: FilterStatus.PENDING,
+    description: 'Curso de IA',
+  },
+  {
+    id: '3',
+    status: FilterStatus.DONE,
+    description: 'Comprar novo teclado',
+  },
+];
 
 function handlePress() {
   return console.log('pressing....');
@@ -19,8 +37,8 @@ export function Home() {
     <View style={styles.container}>
       <Image style={styles.image} source={require('@/assets/logo.png')} />
       <View style={styles.form}>
-        <Input placeholder="Digamos que" />
-        <Button title={'Entrar'} onPress={handlePress} />
+        <Input placeholder="O que você quero comprar hoje?" />
+        <Button title={'Login'} onPress={handlePress} />
       </View>
       <View style={styles.content}>
         <View style={styles.header}>
@@ -33,16 +51,19 @@ export function Home() {
         </View>
         <FlatList
           data={ITEMS}
-          keyExtractor={item => item.toString()}
+          keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
             <Item
               onStatus={() => console.log('Pressing status button')}
               onRemove={() => console.log('Pressing remove button')}
-              data={{
-                status: FilterStatus.DONE,
-                description: `Item ${item}`,
-              }}
+              data={item}
             />
+          )}
+          ListEmptyComponent={() => (
+            <Text style={styles.empty}>{EMPTY_MESSAGE}</Text>
           )}
         />
       </View>
