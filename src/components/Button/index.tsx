@@ -3,7 +3,7 @@ import styles from './styles';
 
 type Props = TouchableOpacityProps & {
   title: string;
-  onPress: () => {};
+  onPress?: () => void;
 };
 export function Button({ title, ...rest }: Props) {
   return (
